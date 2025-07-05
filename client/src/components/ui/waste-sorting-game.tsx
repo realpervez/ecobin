@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Leaf, Recycle, Trash2, Apple, PillBottle, Battery, Newspaper } from "lucide-react";
+import { Leaf, Recycle, Trash2, Apple, PillBottle, Battery, Newspaper, Banana, Milk, Zap, Package, Lightbulb, Salad, Coffee, Smartphone, Scissors, Sandwich } from "lucide-react";
 
 interface WasteItem {
   id: string;
@@ -12,9 +12,19 @@ interface WasteItem {
 
 const wasteItems: WasteItem[] = [
   { id: '1', name: 'Apple Core', icon: <Apple className="w-5 h-5" />, category: 'organic' },
-  { id: '2', name: 'Plastic PillBottle', icon: <PillBottle className="w-5 h-5" />, category: 'recyclable' },
+  { id: '2', name: 'Plastic Bottle', icon: <PillBottle className="w-5 h-5" />, category: 'recyclable' },
   { id: '3', name: 'Battery', icon: <Battery className="w-5 h-5" />, category: 'non-recyclable' },
   { id: '4', name: 'Newspaper', icon: <Newspaper className="w-5 h-5" />, category: 'recyclable' },
+  { id: '5', name: 'Banana Peel', icon: <Banana className="w-5 h-5" />, category: 'organic' },
+  { id: '6', name: 'Milk Carton', icon: <Milk className="w-5 h-5" />, category: 'recyclable' },
+  { id: '7', name: 'LED Bulb', icon: <Lightbulb className="w-5 h-5" />, category: 'non-recyclable' },
+  { id: '8', name: 'Cardboard Box', icon: <Package className="w-5 h-5" />, category: 'recyclable' },
+  { id: '9', name: 'Vegetable Scraps', icon: <Salad className="w-5 h-5" />, category: 'organic' },
+  { id: '10', name: 'Coffee Grounds', icon: <Coffee className="w-5 h-5" />, category: 'organic' },
+  { id: '11', name: 'Old Phone', icon: <Smartphone className="w-5 h-5" />, category: 'non-recyclable' },
+  { id: '12', name: 'Broken Scissors', icon: <Scissors className="w-5 h-5" />, category: 'non-recyclable' },
+  { id: '13', name: 'Food Wrapper', icon: <Sandwich className="w-5 h-5" />, category: 'non-recyclable' },
+  { id: '14', name: 'Electric Wire', icon: <Zap className="w-5 h-5" />, category: 'non-recyclable' },
 ];
 
 export default function WasteSortingGame() {
@@ -25,6 +35,7 @@ export default function WasteSortingGame() {
     'non-recyclable': [],
   });
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [shakingItem, setShakingItem] = useState<string | null>(null);
 
   const handleDragStart = (item: WasteItem) => {
     setDraggedItem(item);
@@ -49,6 +60,9 @@ export default function WasteSortingGame() {
       setFeedback({ type: 'success', message: '✓ Correct!' });
     } else {
       setFeedback({ type: 'error', message: '✗ Try Again' });
+      // Add shake animation to the item
+      setShakingItem(draggedItem.id);
+      setTimeout(() => setShakingItem(null), 600);
     }
 
     setDraggedItem(null);
@@ -63,6 +77,7 @@ export default function WasteSortingGame() {
       'non-recyclable': [],
     });
     setFeedback(null);
+    setShakingItem(null);
   };
 
   const availableItems = wasteItems.filter(item => 
@@ -81,25 +96,38 @@ export default function WasteSortingGame() {
         {/* Available Items */}
         <div className="space-y-4">
           <h4 className="text-xl font-semibold text-gray-700">Drag items to correct bins:</h4>
-          <div className="flex flex-wrap gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {availableItems.map((item) => (
               <div
                 key={item.id}
                 draggable
                 onDragStart={() => handleDragStart(item)}
-                className="bg-white rounded-xl p-3 shadow-lg cursor-move hover-lift transition-all duration-300 flex items-center space-x-2"
+                className={`bg-white rounded-xl p-4 shadow-lg cursor-move hover-lift transition-all duration-300 flex items-center space-x-3 border-2 border-gray-200 hover:border-green-300 ${
+                  shakingItem === item.id ? 'animate-shake border-red-400' : ''
+                }`}
               >
-                {item.icon}
-                <span>{item.name}</span>
+                <div className="text-gray-600">
+                  {item.icon}
+                </div>
+                <span className="text-sm font-medium text-gray-700">{item.name}</span>
               </div>
             ))}
           </div>
           
           {feedback && (
-            <div className={`text-center p-4 rounded-xl ${
-              feedback.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+            <div className={`text-center p-4 rounded-xl font-semibold text-lg animate-pulse ${
+              feedback.type === 'success' 
+                ? 'bg-green-100 text-green-800 border-2 border-green-300' 
+                : 'bg-red-100 text-red-800 border-2 border-red-300'
             }`}>
               {feedback.message}
+            </div>
+          )}
+          
+          {availableItems.length === 0 && (
+            <div className="text-center p-6 bg-gradient-to-r from-green-100 to-blue-100 rounded-xl border-2 border-green-300">
+              <h5 className="text-xl font-bold text-green-800 mb-2">🎉 Congratulations!</h5>
+              <p className="text-green-700">You've sorted all items correctly! Great job learning waste segregation.</p>
             </div>
           )}
           
@@ -109,41 +137,65 @@ export default function WasteSortingGame() {
         </div>
 
         {/* Drop Zones */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div
-            className="bg-green-100 border-2 border-dashed border-green-400 rounded-xl p-6 text-center min-h-[120px] flex flex-col items-center justify-center transition-all duration-300 hover:border-green-500 hover:bg-green-200"
+            className="bg-green-100 border-2 border-dashed border-green-400 rounded-xl p-6 text-center min-h-[140px] flex flex-col items-center justify-center transition-all duration-300 hover:border-green-500 hover:bg-green-200 hover:scale-105"
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, 'organic')}
           >
-            <Leaf className="text-green-600 w-8 h-8 mb-2" />
-            <span className="text-green-600 font-semibold">Organic</span>
-            <div className="mt-2 text-sm text-green-600">
-              {sortedItems.organic.length} items
+            <Leaf className="text-green-600 w-10 h-10 mb-2" />
+            <span className="text-green-600 font-bold text-lg">Organic</span>
+            <div className="mt-2 text-sm text-green-600 font-medium">
+              {sortedItems.organic.length} items sorted
             </div>
+            {sortedItems.organic.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-1 justify-center">
+                {sortedItems.organic.slice(0, 3).map((item, index) => (
+                  <div key={index} className="w-2 h-2 bg-green-500 rounded-full"></div>
+                ))}
+                {sortedItems.organic.length > 3 && <span className="text-xs text-green-600">+{sortedItems.organic.length - 3}</span>}
+              </div>
+            )}
           </div>
 
           <div
-            className="bg-blue-100 border-2 border-dashed border-blue-400 rounded-xl p-6 text-center min-h-[120px] flex flex-col items-center justify-center transition-all duration-300 hover:border-blue-500 hover:bg-blue-200"
+            className="bg-blue-100 border-2 border-dashed border-blue-400 rounded-xl p-6 text-center min-h-[140px] flex flex-col items-center justify-center transition-all duration-300 hover:border-blue-500 hover:bg-blue-200 hover:scale-105"
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, 'recyclable')}
           >
-            <Recycle className="text-blue-600 w-8 h-8 mb-2" />
-            <span className="text-blue-600 font-semibold">Recyclable</span>
-            <div className="mt-2 text-sm text-blue-600">
-              {sortedItems.recyclable.length} items
+            <Recycle className="text-blue-600 w-10 h-10 mb-2" />
+            <span className="text-blue-600 font-bold text-lg">Recyclable</span>
+            <div className="mt-2 text-sm text-blue-600 font-medium">
+              {sortedItems.recyclable.length} items sorted
             </div>
+            {sortedItems.recyclable.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-1 justify-center">
+                {sortedItems.recyclable.slice(0, 3).map((item, index) => (
+                  <div key={index} className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                ))}
+                {sortedItems.recyclable.length > 3 && <span className="text-xs text-blue-600">+{sortedItems.recyclable.length - 3}</span>}
+              </div>
+            )}
           </div>
 
           <div
-            className="bg-red-100 border-2 border-dashed border-red-400 rounded-xl p-6 text-center min-h-[120px] flex flex-col items-center justify-center transition-all duration-300 hover:border-red-500 hover:bg-red-200"
+            className="bg-red-100 border-2 border-dashed border-red-400 rounded-xl p-6 text-center min-h-[140px] flex flex-col items-center justify-center transition-all duration-300 hover:border-red-500 hover:bg-red-200 hover:scale-105"
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, 'non-recyclable')}
           >
-            <Trash2 className="text-red-600 w-8 h-8 mb-2" />
-            <span className="text-red-600 font-semibold">Non-Recyclable</span>
-            <div className="mt-2 text-sm text-red-600">
-              {sortedItems['non-recyclable'].length} items
+            <Trash2 className="text-red-600 w-10 h-10 mb-2" />
+            <span className="text-red-600 font-bold text-lg">Non-Recyclable</span>
+            <div className="mt-2 text-sm text-red-600 font-medium">
+              {sortedItems['non-recyclable'].length} items sorted
             </div>
+            {sortedItems['non-recyclable'].length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-1 justify-center">
+                {sortedItems['non-recyclable'].slice(0, 3).map((item, index) => (
+                  <div key={index} className="w-2 h-2 bg-red-500 rounded-full"></div>
+                ))}
+                {sortedItems['non-recyclable'].length > 3 && <span className="text-xs text-red-600">+{sortedItems['non-recyclable'].length - 3}</span>}
+              </div>
+            )}
           </div>
         </div>
       </div>
