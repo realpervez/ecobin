@@ -12,14 +12,14 @@ export default function HeroSection() {
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center gradient-bg overflow-hidden">
       <div className="container mx-auto px-6 text-center relative z-10">
-        <div className="animate-pulse">
+        <div>
           <h1 className="text-6xl md:text-8xl font-bold text-white mb-6 leading-tight">
             Transform Your
             <span className="block bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
               Waste Into Wonder
             </span>
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-white mb-8 max-w-3xl mx-auto">
             Learn smart waste management techniques that protect our environment and create value for rural communities
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

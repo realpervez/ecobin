@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { Leaf, Recycle, Trash2, Apple, PillBottle, Battery, Newspaper, Banana, Milk, Zap, Package, Lightbulb, Salad, Coffee, Smartphone, Scissors, Sandwich } from "lucide-react";
 
 interface WasteItem {
@@ -34,8 +35,9 @@ export default function WasteSortingGame() {
     recyclable: [],
     'non-recyclable': [],
   });
-  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
-  const [shakingItem, setShakingItem] = useState<string | null>(null);
+  const [fadingItems, setFadingItems] = useState<string[]>([]);
+  const [returningItem, setReturningItem] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const handleDragStart = (item: WasteItem) => {
     setDraggedItem(item);
@@ -53,21 +55,39 @@ export default function WasteSortingGame() {
     const isCorrect = draggedItem.category === category;
     
     if (isCorrect) {
-      setSortedItems(prev => ({
-        ...prev,
-        [category]: [...prev[category], draggedItem],
-      }));
-      setFeedback({ type: 'success', message: '✓ Correct!' });
+      // Start fade animation for correct item
+      setFadingItems(prev => [...prev, draggedItem.id]);
+      
+      // Show success toast
+      toast({
+        title: "Correct!",
+        description: `${draggedItem.name} belongs in ${category} waste.`,
+        duration: 2000,
+      });
+      
+      // Add to sorted items after fade animation
+      setTimeout(() => {
+        setSortedItems(prev => ({
+          ...prev,
+          [category]: [...prev[category], draggedItem],
+        }));
+        setFadingItems(prev => prev.filter(id => id !== draggedItem.id));
+      }, 600);
     } else {
-      setFeedback({ type: 'error', message: '✗ Try Again' });
-      // Add shake animation to the item
-      setShakingItem(draggedItem.id);
-      setTimeout(() => setShakingItem(null), 600);
+      // Show error toast
+      toast({
+        title: "Try Again",
+        description: `${draggedItem.name} doesn't belong in ${category} waste.`,
+        variant: "destructive",
+        duration: 2000,
+      });
+      
+      // Start return animation
+      setReturningItem(draggedItem.id);
+      setTimeout(() => setReturningItem(null), 800);
     }
 
     setDraggedItem(null);
-    
-    setTimeout(() => setFeedback(null), 2000);
   };
 
   const resetGame = () => {
@@ -76,8 +96,8 @@ export default function WasteSortingGame() {
       recyclable: [],
       'non-recyclable': [],
     });
-    setFeedback(null);
-    setShakingItem(null);
+    setFadingItems([]);
+    setReturningItem(null);
   };
 
   const availableItems = wasteItems.filter(item => 
@@ -97,14 +117,20 @@ export default function WasteSortingGame() {
         <div className="space-y-4">
           <h4 className="text-xl font-semibold text-gray-700">Drag items to correct bins:</h4>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {availableItems.map((item) => (
+            {availableItems.map((item, index) => (
               <div
                 key={item.id}
                 draggable
                 onDragStart={() => handleDragStart(item)}
-                className={`bg-white rounded-xl p-4 shadow-lg cursor-move hover-lift transition-all duration-300 flex items-center space-x-3 border-2 border-gray-200 hover:border-green-300 ${
-                  shakingItem === item.id ? 'animate-shake border-red-400' : ''
+                className={`bg-white rounded-xl p-4 shadow-lg cursor-move transition-all duration-500 flex items-center space-x-3 border-2 border-gray-200 hover:border-green-300 hover:scale-105 ${
+                  fadingItems.includes(item.id) ? 'opacity-0 blur-sm scale-75' : ''
+                } ${
+                  returningItem === item.id ? 'animate-bounce border-red-400' : ''
                 }`}
+                style={{
+                  transform: fadingItems.includes(item.id) ? 'translateY(-20px)' : 'translateY(0)',
+                  transitionDelay: `${index * 50}ms`
+                }}
               >
                 <div className="text-gray-600">
                   {item.icon}
@@ -113,16 +139,6 @@ export default function WasteSortingGame() {
               </div>
             ))}
           </div>
-          
-          {feedback && (
-            <div className={`text-center p-4 rounded-xl font-semibold text-lg animate-pulse ${
-              feedback.type === 'success' 
-                ? 'bg-green-100 text-green-800 border-2 border-green-300' 
-                : 'bg-red-100 text-red-800 border-2 border-red-300'
-            }`}>
-              {feedback.message}
-            </div>
-          )}
           
           {availableItems.length === 0 && (
             <div className="text-center p-6 bg-gradient-to-r from-green-100 to-blue-100 rounded-xl border-2 border-green-300">
