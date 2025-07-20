@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Leaf, Menu, X } from "lucide-react";
+import { Link, useLocation } from "wouter";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [location] = useLocation();
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -27,36 +29,46 @@ export default function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
-            <button
-              onClick={() => scrollToSection('home')}
-              className="text-gray-700 hover:text-green-600 transition-colors"
+            <Link
+              href="/"
+              className={`transition-colors ${location === '/' ? 'text-green-600 font-semibold' : 'text-gray-700 hover:text-green-600'}`}
             >
               Home
-            </button>
-            <button
-              onClick={() => scrollToSection('learn')}
-              className="text-gray-700 hover:text-green-600 transition-colors"
+            </Link>
+            <Link
+              href="/our-story"
+              className={`transition-colors ${location === '/our-story' ? 'text-green-600 font-semibold' : 'text-gray-700 hover:text-green-600'}`}
             >
-              Learn
-            </button>
-            <button
-              onClick={() => scrollToSection('practices')}
-              className="text-gray-700 hover:text-green-600 transition-colors"
-            >
-              Practices
-            </button>
-            <button
-              onClick={() => scrollToSection('quiz')}
-              className="text-gray-700 hover:text-green-600 transition-colors"
-            >
-              Quiz
-            </button>
-            <button
-              onClick={() => scrollToSection('impact')}
-              className="text-gray-700 hover:text-green-600 transition-colors"
-            >
-              Impact
-            </button>
+              Our Story
+            </Link>
+            {location === '/' && (
+              <>
+                <button
+                  onClick={() => scrollToSection('learn')}
+                  className="text-gray-700 hover:text-green-600 transition-colors"
+                >
+                  Learn
+                </button>
+                <button
+                  onClick={() => scrollToSection('practices')}
+                  className="text-gray-700 hover:text-green-600 transition-colors"
+                >
+                  Practices
+                </button>
+                <button
+                  onClick={() => scrollToSection('quiz')}
+                  className="text-gray-700 hover:text-green-600 transition-colors"
+                >
+                  Quiz
+                </button>
+                <button
+                  onClick={() => scrollToSection('impact')}
+                  className="text-gray-700 hover:text-green-600 transition-colors"
+                >
+                  Impact
+                </button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -73,36 +85,48 @@ export default function Navigation() {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden mt-4 pb-4 space-y-4">
-            <button
-              onClick={() => scrollToSection('home')}
-              className="block w-full text-left text-gray-700 hover:text-green-600 transition-colors"
+            <Link
+              href="/"
+              className={`block w-full text-left transition-colors ${location === '/' ? 'text-green-600 font-semibold' : 'text-gray-700 hover:text-green-600'}`}
+              onClick={() => setIsMenuOpen(false)}
             >
               Home
-            </button>
-            <button
-              onClick={() => scrollToSection('learn')}
-              className="block w-full text-left text-gray-700 hover:text-green-600 transition-colors"
+            </Link>
+            <Link
+              href="/our-story"
+              className={`block w-full text-left transition-colors ${location === '/our-story' ? 'text-green-600 font-semibold' : 'text-gray-700 hover:text-green-600'}`}
+              onClick={() => setIsMenuOpen(false)}
             >
-              Learn
-            </button>
-            <button
-              onClick={() => scrollToSection('practices')}
-              className="block w-full text-left text-gray-700 hover:text-green-600 transition-colors"
-            >
-              Practices
-            </button>
-            <button
-              onClick={() => scrollToSection('quiz')}
-              className="block w-full text-left text-gray-700 hover:text-green-600 transition-colors"
-            >
-              Quiz
-            </button>
-            <button
-              onClick={() => scrollToSection('impact')}
-              className="block w-full text-left text-gray-700 hover:text-green-600 transition-colors"
-            >
-              Impact
-            </button>
+              Our Story
+            </Link>
+            {location === '/' && (
+              <>
+                <button
+                  onClick={() => scrollToSection('learn')}
+                  className="block w-full text-left text-gray-700 hover:text-green-600 transition-colors"
+                >
+                  Learn
+                </button>
+                <button
+                  onClick={() => scrollToSection('practices')}
+                  className="block w-full text-left text-gray-700 hover:text-green-600 transition-colors"
+                >
+                  Practices
+                </button>
+                <button
+                  onClick={() => scrollToSection('quiz')}
+                  className="block w-full text-left text-gray-700 hover:text-green-600 transition-colors"
+                >
+                  Quiz
+                </button>
+                <button
+                  onClick={() => scrollToSection('impact')}
+                  className="block w-full text-left text-gray-700 hover:text-green-600 transition-colors"
+                >
+                  Impact
+                </button>
+              </>
+            )}
           </div>
         )}
       </div>
