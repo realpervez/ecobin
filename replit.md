@@ -92,6 +92,7 @@ EcoWaste is a comprehensive educational platform focused on sustainable waste ma
 Changelog:
 - July 05, 2025. Initial setup
 - July 25, 2025. Added "Our Story" page with authentic field research photos from Thotapalli Gudur
+- July 25, 2025. Enhanced UI: Removed community impact section, darkened hero background, reduced icon motion, fixed navigation visibility, added location map
 ```
 
 ## User Preferences

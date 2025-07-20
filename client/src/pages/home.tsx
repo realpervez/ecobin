@@ -3,7 +3,7 @@ import HeroSection from "@/components/hero-section";
 import WasteSegregation from "@/components/waste-segregation";
 import PracticesSection from "@/components/practices-section";
 import QuizSection from "@/components/quiz-section";
-import ImpactSection from "@/components/impact-section";
+
 import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { ChevronUp } from "lucide-react";
@@ -32,7 +32,7 @@ export default function Home() {
       <WasteSegregation />
       <PracticesSection />
       <QuizSection />
-      <ImpactSection />
+
       <Footer />
       
       {/* Scroll to top button */}

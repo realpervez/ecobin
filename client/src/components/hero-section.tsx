@@ -10,7 +10,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center gradient-bg overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black overflow-hidden">
       <div className="container mx-auto px-6 text-center relative z-10">
         <div>
           <h1 className="text-6xl md:text-8xl font-bold text-white mb-6 leading-tight">
@@ -44,14 +44,14 @@ export default function HeroSection() {
       
       {/* Floating Icons */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 animate-bounce">
-          <Recycle className="text-white/30 w-12 h-12" />
+        <div className="absolute top-1/4 left-1/4" style={{ animation: 'gentleFloat 8s ease-in-out infinite' }}>
+          <Recycle className="text-white/20 w-12 h-12" />
         </div>
-        <div className="absolute top-1/3 right-1/4 animate-pulse">
-          <Sprout className="text-white/30 w-10 h-10" />
+        <div className="absolute top-1/3 right-1/4" style={{ animation: 'gentleFloat 10s ease-in-out infinite 2s' }}>
+          <Sprout className="text-white/20 w-10 h-10" />
         </div>
-        <div className="absolute bottom-1/4 left-1/3" style={{ animation: 'float 3s ease-in-out infinite' }}>
-          <Trash2 className="text-white/30 w-10 h-10" />
+        <div className="absolute bottom-1/4 left-1/3" style={{ animation: 'gentleFloat 12s ease-in-out infinite 4s' }}>
+          <Trash2 className="text-white/20 w-10 h-10" />
         </div>
       </div>
     </section>

@@ -29,7 +29,10 @@ export default function FloatingParticles() {
           style={{
             left: `${particle.x}%`,
             top: `${particle.y}%`,
-            animation: `float 6s ease-in-out infinite`,
+            animationName: 'gentleFloat',
+            animationDuration: '15s',
+            animationTimingFunction: 'ease-in-out',
+            animationIterationCount: 'infinite',
             animationDelay: `${particle.delay}s`,
           }}
         />

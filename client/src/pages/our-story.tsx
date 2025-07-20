@@ -1,16 +1,17 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Users, Quote, Lightbulb, Target, Heart } from "lucide-react";
+import Navigation from "@/components/navigation";
 
-// Field photos paths
+// Field photos from your actual visit to Thotapalli Gudur
 const fieldPhotos = [
-  "/attached_assets/IMG_1465_1753010450199.JPG",
-  "/attached_assets/IMG_1468_1753010450200.JPG", 
-  "/attached_assets/IMG_1470_1753010450200.JPG",
-  "/attached_assets/IMG_1472_1753010450201.JPG",
-  "/attached_assets/IMG_1473_1753010450201.JPG",
-  "/attached_assets/IMG_1475_1753010450201.JPG",
-  "/attached_assets/IMG_1476_1753010450201.JPG"
+  "/images/IMG_1465_1753010450199.JPG",
+  "/images/IMG_1468_1753010450200.JPG", 
+  "/images/IMG_1470_1753010450200.JPG",
+  "/images/IMG_1472_1753010450201.JPG",
+  "/images/IMG_1473_1753010450201.JPG",
+  "/images/IMG_1475_1753010450201.JPG",
+  "/images/IMG_1476_1753010450201.JPG"
 ];
 
 export default function OurStory() {
@@ -61,7 +62,8 @@ export default function OurStory() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
-      <div className="container mx-auto px-4 py-12">
+      <Navigation />
+      <div className="container mx-auto px-4 py-12 mt-20">
         {/* Hero Section */}
         <div className="text-center mb-16">
           <Badge className="mb-4 bg-green-100 text-green-800 hover:bg-green-200">
@@ -90,6 +92,25 @@ export default function OurStory() {
             <p>
               We didn't "run a big program." We just asked people what bugs them most about waste and cleanliness.
             </p>
+          </div>
+        </Card>
+
+        {/* Location Map */}
+        <Card className="glass-effect rounded-3xl p-8 mb-16">
+          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+            Our Field Location
+          </h2>
+          <div className="flex justify-center mb-8">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15458.495299902128!2d80.07738725!3d14.39116335!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a4cf590ee3bfb77%3A0x3f90803880d41915!2sThotapalli%20Gudur%2C%20Andhra%20Pradesh%20524311!5e0!3m2!1sen!2sin!4v1753009677930!5m2!1sen!2sin" 
+              width="100%" 
+              height="450" 
+              style={{border:0, borderRadius: '12px', maxWidth: '600px'}} 
+              allowFullScreen={true}
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              className="shadow-lg"
+            />
           </div>
         </Card>
 
