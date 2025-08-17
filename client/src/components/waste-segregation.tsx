@@ -9,7 +9,7 @@ export default function WasteSegregation() {
       icon: <Leaf className="text-white text-xl" />,
       color: "from-green-50 to-emerald-50",
       iconBg: "bg-green-500",
-      image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+      image: "https://media.istockphoto.com/id/1208241405/photo/discarded-and-spoiled-food-on-a-rubbish-heap.jpg?s=612x612&w=0&k=20&c=7Dbd84etp7s0R6upv3QHZcZtbfr_8TlGw-R0GGHrcH8=",
       description: "Kitchen scraps, food waste, garden clippings that can be composted",
       items: [
         { name: "Vegetable peels", icon: <Check className="text-green-500 w-4 h-4" /> },
@@ -23,7 +23,7 @@ export default function WasteSegregation() {
       icon: <Recycle className="text-white text-xl" />,
       color: "from-blue-50 to-cyan-50",
       iconBg: "bg-blue-500",
-      image: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+      image: "https://media.istockphoto.com/id/2178912117/photo/full-frame-of-trash-plastics-and-cans-on-white-background.jpg?s=612x612&w=0&k=20&c=gSPwiidui1dT4tw5e1CylpiNl9B2aMIAd2cfE97GlFk=",
       description: "Materials that can be processed and reused",
       items: [
         { name: "Plastic bottles", icon: <Check className="text-blue-500 w-4 h-4" /> },
@@ -37,7 +37,7 @@ export default function WasteSegregation() {
       icon: <Trash2 className="text-white text-xl" />,
       color: "from-red-50 to-orange-50",
       iconBg: "bg-red-500",
-      image: "https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+      image: "https://images.pexels.com/photos/10251355/pexels-photo-10251355.jpeghttps://www.genevaenvironmentnetwork.org/wp-content/uploads/2020/09/ewaste-aspect-ratio-2000-1200-1024x614.jpg",
       description: "Items that need special disposal methods",
       items: [
         { name: "Sanitary waste", icon: <X className="text-red-500 w-4 h-4" /> },
