@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoWaste - Smart Waste Management Education</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'eco-green': '#10B981',
+                        'eco-blue': '#3B82F6',
+                        'eco-amber': '#F59E0B',
+                        'eco-red': '#EF4444',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slow': 'bounce 2s infinite',
+                    },
+                    backdropBlur: {
+                        'xs': '2px',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #10B981, #3B82F6, #8B5CF6);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .cursor-trail {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            mix-blend-mode: screen;
+        }
+        
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ripple::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .ripple:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .card-glow {
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .card-glow:hover {
+            box-shadow: 0 0 50px rgba(16, 185, 129, 0.5);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #10B981, #3B82F6);
+            transition: width 0.5s ease;
+        }
+        
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .quiz-option {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .quiz-option:hover {
+            transform: scale(1.02);
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .quiz-option.correct {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: #10B981;
+        }
+        
+        .quiz-option.incorrect {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #EF4444;
+        }
+        
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        
+        .parallax {
+            transform: translateZ(0);
+            will-change: transform;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans smooth-scroll">
+    <!-- Cursor Trail Effect -->
+    <div class="cursor-trail" id="cursor-trail"></div>
+    
+    <!-- Floating Particles -->
+    <div class="floating-particles fixed inset-0 pointer-events-none z-0">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 7s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 8s;"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-effect">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-r from-eco-green to-eco-blue rounded-xl flex items-center justify-center">
+                        <i class="fas fa-leaf text-white text-lg"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-gray-800">EcoWaste</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-eco-green transition-colors">Home</a>
+                    <a href="#learn" class="text-gray-700 hover:text-eco-green transition-colors">Learn</a>
+                    <a href="#practices" class="text-gray-700 hover:text-eco-green transition-colors">Practices</a>
+                    <a href="#quiz" class="text-gray-700 hover:text-eco-green transition-colors">Quiz</a>
+                    <a href="#impact" class="text-gray-700 hover:text-eco-green transition-colors">Impact</a>
+                </div>
+                <button class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center gradient-bg overflow-hidden">
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <div class="animate-float">
+                <h1 class="text-6xl md:text-8xl font-bold text-white mb-6 leading-tight">
+                    Transform Your
+                    <span class="block bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
+                        Waste Into Wonder
+                    </span>
+                </h1>
+                <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
+                    Learn smart waste management techniques that protect our environment and create value for rural communities
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="ripple bg-white text-eco-green px-8 py-4 rounded-2xl font-semibold text-lg hover-lift shadow-2xl">
+                        Start Learning
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <button class="ripple glass-effect text-white px-8 py-4 rounded-2xl font-semibold text-lg hover-lift">
+                        Take Quiz
+                        <i class="fas fa-play ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating Icons -->
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute top-1/4 left-1/4 animate-bounce-slow">
+                <i class="fas fa-recycle text-white/30 text-4xl"></i>
+            </div>
+            <div class="absolute top-1/3 right-1/4 animate-pulse-slow">
+                <i class="fas fa-seedling text-white/30 text-3xl"></i>
+            </div>
+            <div class="absolute bottom-1/4 left-1/3 animate-float">
+                <i class="fas fa-trash-alt text-white/30 text-3xl"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waste Segregation Guide -->
+    <section id="learn" class="py-20 bg-white relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-800 mb-4">Master Waste Segregation</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Learn to separate waste effectively for a cleaner environment</p>
+            </div>
+            
+            <!-- Waste Categories -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="card-glow bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-8 hover-lift">
+                    <!-- Clean rural environment with green landscapes -->
+                    <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400" alt="Organic waste" class="w-full h-48 object-cover rounded-2xl mb-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-eco-green rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-leaf text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">Organic Waste</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Kitchen scraps, food waste, garden clippings that can be composted</p>
+                    <ul class="text-sm text-gray-500 space-y-2">
+                        <li><i class="fas fa-check text-eco-green mr-2"></i>Vegetable peels</li>
+                        <li><i class="fas fa-check text-eco-green mr-2"></i>Fruit waste</li>
+                        <li><i class="fas fa-check text-eco-green mr-2"></i>Garden waste</li>
+                        <li><i class="fas fa-check text-eco-green mr-2"></i>Paper napkins</li>
+                    </ul>
+                </div>
+                
+                <div class="card-glow bg-gradient-to-br from-blue-50 to-cyan-50 rounded-3xl p-8 hover-lift">
+                    <!-- Recycling symbols and materials -->
+                    <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400" alt="Recyclable waste" class="w-full h-48 object-cover rounded-2xl mb-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-eco-blue rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-recycle text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">Recyclable</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Materials that can be processed and reused</p>
+                    <ul class="text-sm text-gray-500 space-y-2">
+                        <li><i class="fas fa-check text-eco-blue mr-2"></i>Plastic bottles</li>
+                        <li><i class="fas fa-check text-eco-blue mr-2"></i>Glass containers</li>
+                        <li><i class="fas fa-check text-eco-blue mr-2"></i>Metal cans</li>
+                        <li><i class="fas fa-check text-eco-blue mr-2"></i>Paper & cardboard</li>
+                    </ul>
+                </div>
+                
+                <div class="card-glow bg-gradient-to-br from-red-50 to-orange-50 rounded-3xl p-8 hover-lift">
+                    <!-- Waste management facility -->
+                    <img src="https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400" alt="Non-recyclable waste" class="w-full h-48 object-cover rounded-2xl mb-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-eco-red rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-trash text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">Non-Recyclable</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Items that need special disposal methods</p>
+                    <ul class="text-sm text-gray-500 space-y-2">
+                        <li><i class="fas fa-times text-eco-red mr-2"></i>Sanitary waste</li>
+                        <li><i class="fas fa-times text-eco-red mr-2"></i>Broken glass</li>
+                        <li><i class="fas fa-times text-eco-red mr-2"></i>Electronics</li>
+                        <li><i class="fas fa-times text-eco-red mr-2"></i>Batteries</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Interactive Waste Sorting -->
+            <div class="glass-effect rounded-3xl p-8 mb-16">
+                <h3 class="text-3xl font-bold text-center mb-8 text-gray-800">Interactive Waste Sorting</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <h4 class="text-xl font-semibold text-gray-700">Drag items to correct bins:</h4>
+                        <div class="flex flex-wrap gap-3">
+                            <div class="waste-item bg-white rounded-xl p-3 shadow-lg cursor-move hover-lift" draggable="true">
+                                <i class="fas fa-apple-alt text-eco-green mr-2"></i>Apple Core
+                            </div>
+                            <div class="waste-item bg-white rounded-xl p-3 shadow-lg cursor-move hover-lift" draggable="true">
+                                <i class="fas fa-bottle-water text-eco-blue mr-2"></i>Plastic Bottle
+                            </div>
+                            <div class="waste-item bg-white rounded-xl p-3 shadow-lg cursor-move hover-lift" draggable="true">
+                                <i class="fas fa-battery-full text-eco-red mr-2"></i>Battery
+                            </div>
+                            <div class="waste-item bg-white rounded-xl p-3 shadow-lg cursor-move hover-lift" draggable="true">
+                                <i class="fas fa-newspaper text-eco-blue mr-2"></i>Newspaper
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="drop-zone bg-green-100 border-2 border-dashed border-eco-green rounded-xl p-6 text-center min-h-[100px] flex items-center justify-center">
+                            <div>
+                                <i class="fas fa-leaf text-eco-green text-2xl block mb-2"></i>
+                                <span class="text-eco-green font-semibold">Organic</span>
+                            </div>
+                        </div>
+                        <div class="drop-zone bg-blue-100 border-2 border-dashed border-eco-blue rounded-xl p-6 text-center min-h-[100px] flex items-center justify-center">
+                            <div>
+                                <i class="fas fa-recycle text-eco-blue text-2xl block mb-2"></i>
+                                <span class="text-eco-blue font-semibold">Recyclable</span>
+                            </div>
+                        </div>
+                        <div class="drop-zone bg-red-100 border-2 border-dashed border-eco-red rounded-xl p-6 text-center min-h-[100px] flex items-center justify-center">
+                            <div>
+                                <i class="fas fa-trash text-eco-red text-2xl block mb-2"></i>
+                                <span class="text-eco-red font-semibold">Non-Recyclable</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Composting & Practices -->
+    <section id="practices" class="py-20 bg-gradient-to-br from-eco-green to-eco-blue relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-white mb-4">Waste-to-Value Practices</h2>
+                <p class="text-xl text-white/90 max-w-2xl mx-auto">Turn your waste into valuable resources with these low-cost methods</p>
+            </div>
+            
+            <!-- Composting Process -->
+            <div class="mb-16">
+                <h3 class="text-3xl font-bold text-white text-center mb-8">Composting Made Easy</h3>
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="glass-effect rounded-2xl p-6 text-center hover-lift">
+                        <!-- Composting process step 1 -->
+                        <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" alt="Collecting organic waste" class="w-full h-40 object-cover rounded-xl mb-4">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-eco-green font-bold text-xl">1</span>
+                        </div>
+                        <h4 class="text-white font-semibold mb-2">Collect</h4>
+                        <p class="text-white/80 text-sm">Gather organic waste from kitchen and garden</p>
+                    </div>
+                    
+                    <div class="glass-effect rounded-2xl p-6 text-center hover-lift">
+                        <!-- Composting process step 2 -->
+                        <img src="https://pixabay.com/get/g5c712e3a1b1efadce9852f5e23e08cc4f1810de221543f5a8e234b324d7675ed0f6e887bc2c6201710b62195ffb725f3f07963801f5756110c38a6d218d086d2_1280.jpg" alt="Layering composting materials" class="w-full h-40 object-cover rounded-xl mb-4">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-eco-green font-bold text-xl">2</span>
+                        </div>
+                        <h4 class="text-white font-semibold mb-2">Layer</h4>
+                        <p class="text-white/80 text-sm">Alternate green and brown materials in layers</p>
+                    </div>
+                    
+                    <div class="glass-effect rounded-2xl p-6 text-center hover-lift">
+                        <!-- Composting process step 3 -->
+                        <img src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" alt="Turning compost pile" class="w-full h-40 object-cover rounded-xl mb-4">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-eco-green font-bold text-xl">3</span>
+                        </div>
+                        <h4 class="text-white font-semibold mb-2">Turn</h4>
+                        <p class="text-white/80 text-sm">Mix regularly to maintain proper air flow</p>
+                    </div>
+                    
+                    <div class="glass-effect rounded-2xl p-6 text-center hover-lift">
+                        <!-- Composting process step 4 -->
+                        <img src="https://pixabay.com/get/g10d3fb8673abf06476e2d2185963a7bdacb17a737ba02275581fd5f195b9d1464f3b18d4bf22f747d1c27e0222106deb359df4c490544eb96cd115f1ab7c8d75_1280.jpg" alt="Finished compost soil" class="w-full h-40 object-cover rounded-xl mb-4">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-eco-green font-bold text-xl">4</span>
+                        </div>
+                        <h4 class="text-white font-semibold mb-2">Harvest</h4>
+                        <p class="text-white/80 text-sm">Use rich compost for healthy soil and plants</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sustainable Practices -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-effect rounded-2xl p-8 hover-lift">
+                    <h4 class="text-2xl font-bold text-white mb-4">
+                        <i class="fas fa-recycle mr-3"></i>Plastic Reuse Ideas
+                    </h4>
+                    <ul class="space-y-3 text-white/90">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-amber mr-3"></i>
+                            Turn bottles into planters
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-amber mr-3"></i>
+                            Create storage containers
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-amber mr-3"></i>
+                            Make bird feeders
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-amber mr-3"></i>
+                            Craft watering tools
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="glass-effect rounded-2xl p-8 hover-lift">
+                    <h4 class="text-2xl font-bold text-white mb-4">
+                        <i class="fas fa-leaf mr-3"></i>Reduce & Prevent
+                    </h4>
+                    <ul class="space-y-3 text-white/90">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-amber mr-3"></i>
+                            Use reusable bags
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-amber mr-3"></i>
+                            Buy in bulk to reduce packaging
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-amber mr-3"></i>
+                            Refuse single-use items
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-eco-amber mr-3"></i>
+                            Choose products with minimal packaging
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Quiz -->
+    <section id="quiz" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-800 mb-4">Test Your Knowledge</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Take our interactive quiz to see how much you've learned</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <!-- Quiz Progress -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-medium text-gray-600">Question <span id="current-question">1</span> of <span id="total-questions">5</span></span>
+                        <span class="text-sm font-medium text-gray-600"><span id="quiz-score">0</span> / <span id="quiz-total">5</span></span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div id="quiz-progress" class="progress-bar h-3 rounded-full" style="width: 20%"></div>
+                    </div>
+                </div>
+                
+                <!-- Quiz Container -->
+                <div id="quiz-container" class="glass-effect rounded-3xl p-8">
+                    <!-- Question 1 -->
+                    <div class="quiz-question active" data-question="1">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">Which items belong in the organic waste bin?</h3>
+                        <div class="space-y-4">
+                            <div class="quiz-option border-2 border-gray-200 rounded-2xl p-4" data-answer="correct">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-4"></div>
+                                    <span class="text-gray-700">Fruit peels, vegetable scraps, and coffee grounds</span>
+                                </div>
+                            </div>
+                            <div class="quiz-option border-2 border-gray-200 rounded-2xl p-4" data-answer="incorrect">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-4"></div>
+                                    <span class="text-gray-700">Plastic bottles, metal cans, and glass jars</span>
+                                </div>
+                            </div>
+                            <div class="quiz-option border-2 border-gray-200 rounded-2xl p-4" data-answer="incorrect">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-4"></div>
+                                    <span class="text-gray-700">Batteries, electronics, and chemical containers</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 2 -->
+                    <div class="quiz-question hidden" data-question="2">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">How long does it typically take to create usable compost?</h3>
+                        <div class="space-y-4">
+                            <div class="quiz-option border-2 border-gray-200 rounded-2xl p-4" data-answer="incorrect">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-4"></div>
+                                    <span class="text-gray-700">1-2 weeks</span>
+                                </div>
+                            </div>
+                            <div class="quiz-option border-2 border-gray-200 rounded-2xl p-4" data-answer="correct">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-4"></div>
+                                    <span class="text-gray-700">2-6 months</span>
+                                </div>
+                            </div>
+                            <div class="quiz-option border-2 border-gray-200 rounded-2xl p-4" data-answer="incorrect">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-4"></div>
+                                    <span class="text-gray-700">1-2 years</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 3 -->
+                    <div class="quiz-question hidden" data-question="3">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">What is the main benefit of waste segregation?</h3>
+                        <div class="space-y-4">
+                            <div class="quiz-option border-2 border-gray-200 rounded-2xl p-4" data-answer="incorrect">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-4"></div>
+                                    <span class="text-gray-700">It makes garbage trucks lighter</span>
+                                </div>
+                            </div>
+                            <div class="quiz-option border-2 border-gray-200 rounded-2xl p-4" data-answer="correct">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-4"></div>
+                                    <span class="text-gray-700">It enables proper recycling and composting</span>
+                                </div>
+                            </div>
+                            <div class="quiz-option border-2 border-gray-200 rounded-2xl p-4" data-answer="incorrect">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-4"></div>
+                                    <span class="text-gray-700">It saves money on garbage bags</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 4 -->
+                    <div class="quiz-question hidden" data-question="4">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">Which action helps reduce plastic waste most effectively?</h3>
+                        <div class="space-y-4">
+                            <div class="quiz-option border-2 border-gray-200 rounded-2xl p-4" data-answer="incorrect">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-4"></div>
+                                    <span class="text-gray-700">Buying more plastic products</span>
+                                </div>
+                            </div>
+                            <div class="quiz-option border-2 border-gray-200 rounded-2xl p-4" data-answer="correct">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-4"></div>
+                                    <span class="text-gray-700">Using reusable bags and containers</span>
+                                </div>
+                            </div>
+                            <div class="quiz-option border-2 border-gray-200 rounded-2xl p-4" data-answer="incorrect">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-4"></div>
+                                    <span class="text-gray-700">Throwing all plastic in one bin</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 5 -->
+                    <div class="quiz-question hidden" data-question="5">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">What should you do with batteries and electronics?</h3>
+                        <div class="space-y-4">
+                            <div class="quiz-option border-2 border-gray-200 rounded-2xl p-4" data-answer="incorrect">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-4"></div>
+                                    <span class="text-gray-700">Put them in the organic waste bin</span>
+                                </div>
+                            </div>
+                            <div class="quiz-option border-2 border-gray-200 rounded-2xl p-4" data-answer="incorrect">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-4"></div>
+                                    <span class="text-gray-700">Throw them in regular trash</span>
+                                </div>
+                            </div>
+                            <div class="quiz-option border-2 border-gray-200 rounded-2xl p-4" data-answer="correct">
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded-full mr-4"></div>
+                                    <span class="text-gray-700">Take them to special collection centers</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Navigation -->
+                    <div class="flex justify-between items-center mt-8">
+                        <button id="prev-btn" class="ripple bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold disabled:opacity-50" disabled>
+                            <i class="fas fa-arrow-left mr-2"></i>Previous
+                        </button>
+                        <button id="next-btn" class="ripple bg-eco-green text-white px-6 py-3 rounded-xl font-semibold">
+                            Next<i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                        <button id="submit-btn" class="ripple bg-eco-green text-white px-6 py-3 rounded-xl font-semibold hidden">
+                            Submit Quiz<i class="fas fa-check ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Quiz Results -->
+                <div id="quiz-results" class="glass-effect rounded-3xl p-8 text-center hidden">
+                    <div class="animate-bounce-slow mb-6">
+                        <i class="fas fa-trophy text-eco-amber text-6xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4">Quiz Complete!</h3>
+                    <p class="text-xl text-gray-600 mb-6">Your Score: <span id="final-score" class="font-bold text-eco-green">0</span> / 5</p>
+                    <div id="score-message" class="text-lg text-gray-700 mb-6"></div>
+                    <button id="restart-quiz" class="ripple bg-eco-green text-white px-8 py-4 rounded-2xl font-semibold">
+                        Take Quiz Again<i class="fas fa-redo ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Impact -->
+    <section id="impact" class="py-20 bg-gradient-to-br from-purple-600 to-blue-600">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-white mb-4">Community Impact</h2>
+                <p class="text-xl text-white/90 max-w-2xl mx-auto">See the positive changes happening in communities worldwide</p>
+            </div>
+            
+            <!-- Impact Stats -->
+            <div class="grid md:grid-cols-4 gap-6 mb-16">
+                <div class="glass-effect rounded-2xl p-6 text-center hover-lift">
+                    <div class="text-4xl font-bold text-white mb-2" id="families-count">0</div>
+                    <div class="text-white/80">Families Practicing</div>
+                </div>
+                <div class="glass-effect rounded-2xl p-6 text-center hover-lift">
+                    <div class="text-4xl font-bold text-white mb-2" id="waste-reduced">0</div>
+                    <div class="text-white/80">Tons Waste Reduced</div>
+                </div>
+                <div class="glass-effect rounded-2xl p-6 text-center hover-lift">
+                    <div class="text-4xl font-bold text-white mb-2" id="compost-created">0</div>
+                    <div class="text-white/80">Kg Compost Created</div>
+                </div>
+                <div class="glass-effect rounded-2xl p-6 text-center hover-lift">
+                    <div class="text-4xl font-bold text-white mb-2" id="areas-cleaned">0</div>
+                    <div class="text-white/80">Areas Cleaned</div>
+                </div>
+            </div>
+            
+            <!-- Before/After Gallery -->
+            <div class="mb-16">
+                <h3 class="text-3xl font-bold text-white text-center mb-8">Before & After</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="glass-effect rounded-2xl overflow-hidden hover-lift">
+                        <div class="relative">
+                            <!-- Polluted rural area before cleanup -->
+                            <img src="https://images.unsplash.com/photo-1605792657660-596af9009e82?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400" alt="Before - polluted area" class="w-full h-64 object-cover">
+                            <div class="absolute top-4 left-4 bg-eco-red text-white px-4 py-2 rounded-full font-semibold">
+                                Before
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold text-white mb-2">Polluted Riverbank</h4>
+                            <p class="text-white/80">Plastic waste and garbage scattered along the water</p>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-effect rounded-2xl overflow-hidden hover-lift">
+                        <div class="relative">
+                            <!-- Clean rural environment after cleanup -->
+                            <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400" alt="After - clean environment" class="w-full h-64 object-cover">
+                            <div class="absolute top-4 left-4 bg-eco-green text-white px-4 py-2 rounded-full font-semibold">
+                                After
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold text-white mb-2">Clean Natural Environment</h4>
+                            <p class="text-white/80">Restored ecosystem with proper waste management</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Success Stories -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="glass-effect rounded-2xl p-6 hover-lift">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-eco-green rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold">Priya Sharma</h4>
+                            <p class="text-white/60 text-sm">Village Leader</p>
+                        </div>
+                    </div>
+                    <p class="text-white/80 text-sm">"Our village has been transformed! We now have clean streets and our composting program feeds 50 families with organic vegetables."</p>
+                </div>
+                
+                <div class="glass-effect rounded-2xl p-6 hover-lift">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-eco-blue rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold">Rajesh Kumar</h4>
+                            <p class="text-white/60 text-sm">School Teacher</p>
+                        </div>
+                    </div>
+                    <p class="text-white/80 text-sm">"Teaching children about waste segregation has created a ripple effect. Now entire families are practicing sustainable waste management."</p>
+                </div>
+                
+                <div class="glass-effect rounded-2xl p-6 hover-lift">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-eco-amber rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold">Maya Patel</h4>
+                            <p class="text-white/60 text-sm">Community Organizer</p>
+                        </div>
+                    </div>
+                    <p class="text-white/80 text-sm">"We've reduced mosquito breeding by 80% through proper waste management. Our community is healthier and happier."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-r from-eco-green to-eco-blue rounded-lg flex items-center justify-center">
+                            <i class="fas fa-leaf text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold">EcoWaste</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">Transforming rural communities through sustainable waste management education.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#home" class="hover:text-eco-green transition-colors">Home</a></li>
+                        <li><a href="#learn" class="hover:text-eco-green transition-colors">Learn</a></li>
+                        <li><a href="#practices" class="hover:text-eco-green transition-colors">Practices</a></li>
+                        <li><a href="#quiz" class="hover:text-eco-green transition-colors">Quiz</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-eco-green transition-colors">Composting Guide</a></li>
+                        <li><a href="#" class="hover:text-eco-green transition-colors">Recycling Tips</a></li>
+                        <li><a href="#" class="hover:text-eco-green transition-colors">Community Stories</a></li>
+                        <li><a href="#" class="hover:text-eco-green transition-colors">Downloads</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Contact</h4>
+                    <div class="space-y-2 text-sm text-gray-400">
+                        <p><i class="fas fa-envelope mr-2"></i>info@ecowaste.org</p>
+                        <p><i class="fas fa-phone mr-2"></i>+91 98765 43210</p>
+                        <div class="flex space-x-4 mt-4">
+                            <a href="#" class="text-gray-400 hover:text-eco-green transition-colors">
+                                <i class="fab fa-facebook text-lg"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-eco-green transition-colors">
+                                <i class="fab fa-twitter text-lg"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-eco-green transition-colors">
+                                <i class="fab fa-instagram text-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400 text-sm">&copy; 2024 EcoWaste. All rights reserved. Made with 💚 for a sustainable future.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Button -->
+    <button id="scroll-to-top" class="fixed bottom-8 right-8 w-14 h-14 bg-eco-green text-white rounded-full shadow-2xl hover-lift ripple z-50 opacity-0 pointer-events-none transition-all duration-300">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Cursor trail effect
+        (function() {
+            const trail = document.getElementById('cursor-trail');
+            let mouseX = 0, mouseY = 0;
+            let trailX = 0, trailY = 0;
+            
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            function animateTrail() {
+                trailX += (mouseX - trailX) * 0.1;
+                trailY += (mouseY - trailY) * 0.1;
+                
+                trail.style.left = trailX + 'px';
+                trail.style.top = trailY + 'px';
+                trail.style.background = `radial-gradient(circle, rgba(16, 185, 129, 0.8) 0%, rgba(59, 130, 246, 0.4) 50%, transparent 100%)`;
+                
+                requestAnimationFrame(animateTrail);
+            }
+            
+            animateTrail();
+        })();
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll to top button
+        const scrollToTopBtn = document.getElementById('scroll-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.style.opacity = '1';
+                scrollToTopBtn.style.pointerEvents = 'auto';
+            } else {
+                scrollToTopBtn.style.opacity = '0';
+                scrollToTopBtn.style.pointerEvents = 'none';
+            }
+        });
+
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Animated counters
+        function animateCounters() {
+            const counters = [
+                { element: document.getElementById('families-count'), target: 1250 },
+                { element: document.getElementById('waste-reduced'), target: 340 },
+                { element: document.getElementById('compost-created'), target: 15600 },
+                { element: document.getElementById('areas-cleaned'), target: 89 }
+            ];
+            
+            counters.forEach(counter => {
+                let current = 0;
+                const increment = counter.target / 100;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= counter.target) {
+                        current = counter.target;
+                        clearInterval(timer);
+                    }
+                    counter.element.textContent = Math.floor(current);
+                }, 50);
+            });
+        }
+
+        // Trigger counter animation when section comes into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        observer.observe(document.getElementById('impact'));
+
+        // Quiz functionality
+        (function() {
+            let currentQuestion = 1;
+            let score = 0;
+            let userAnswers = [];
+            const totalQuestions = 5;
+
+            const elements = {
+                currentQuestionEl: document.getElementById('current-question'),
+                totalQuestionsEl: document.getElementById('total-questions'),
+                quizScoreEl: document.getElementById('quiz-score'),
+                quizTotalEl: document.getElementById('quiz-total'),
+                progressBar: document.getElementById('quiz-progress'),
+                prevBtn: document.getElementById('prev-btn'),
+                nextBtn: document.getElementById('next-btn'),
+                submitBtn: document.getElementById('submit-btn'),
+                quizContainer: document.getElementById('quiz-container'),
+                quizResults: document.getElementById('quiz-results'),
+                finalScore: document.getElementById('final-score'),
+                scoreMessage: document.getElementById('score-message'),
+                restartBtn: document.getElementById('restart-quiz')
+            };
+
+            function updateProgress() {
+                const progress = (currentQuestion / totalQuestions) * 100;
+                elements.progressBar.style.width = progress + '%';
+                elements.currentQuestionEl.textContent = currentQuestion;
+                elements.quizScoreEl.textContent = score;
+            }
+
+            function showQuestion(questionNum) {
+                document.querySelectorAll('.quiz-question').forEach(q => {
+                    q.classList.add('hidden');
+                });
+                
+                const question = document.querySelector(`[data-question="${questionNum}"]`);
+                if (question) {
+                    question.classList.remove('hidden');
+                }
+                
+                // Update button states
+                elements.prevBtn.disabled = questionNum === 1;
+                
+                if (questionNum === totalQuestions) {
+                    elements.nextBtn.classList.add('hidden');
+                    elements.submitBtn.classList.remove('hidden');
+                } else {
+                    elements.nextBtn.classList.remove('hidden');
+                    elements.submitBtn.classList.add('hidden');
+                }
+            }
+
+            function handleAnswerSelection() {
+                document.querySelectorAll('.quiz-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const question = this.closest('.quiz-question');
+                        const questionNum = parseInt(question.dataset.question);
+                        
+                        // Remove previous selections
+                        question.querySelectorAll('.quiz-option').forEach(opt => {
+                            opt.classList.remove('selected');
+                            const circle = opt.querySelector('.w-6');
+                            circle.style.backgroundColor = '';
+                        });
+                        
+                        // Mark this option as selected
+                        this.classList.add('selected');
+                        const circle = this.querySelector('.w-6');
+                        circle.style.backgroundColor = '#10B981';
+                        
+                        // Store answer
+                        userAnswers[questionNum - 1] = {
+                            selected: this.dataset.answer,
+                            correct: this.dataset.answer === 'correct'
+                        };
+                        
+                        // Enable navigation
+                        if (questionNum === totalQuestions) {
+                            elements.submitBtn.disabled = false;
+                        } else {
+                            elements.nextBtn.disabled = false;
+                        }
+                    });
+                });
+            }
+
+            function calculateScore() {
+                score = userAnswers.filter(answer => answer && answer.correct).length;
+                elements.finalScore.textContent = score;
+                
+                let message = '';
+                if (score === 5) {
+                    message = '🎉 Perfect! You are a waste management expert!';
+                } else if (score >= 3) {
+                    message = '👍 Great job! You have a good understanding of waste management.';
+                } else {
+                    message = '📚 Keep learning! Review the materials and try again.';
+                }
+                
+                elements.scoreMessage.textContent = message;
+            }
+
+            function showResults() {
+                calculateScore();
+                elements.quizContainer.classList.add('hidden');
+                elements.quizResults.classList.remove('hidden');
+                
+                // Show correct answers
+                document.querySelectorAll('.quiz-question').forEach((question, index) => {
+                    const options = question.querySelectorAll('.quiz-option');
+                    options.forEach(option => {
+                        if (option.dataset.answer === 'correct') {
+                            option.classList.add('correct');
+                        } else if (userAnswers[index] && userAnswers[index].selected === option.dataset.answer) {
+                            option.classList.add('incorrect');
+                        }
+                    });
+                });
+            }
+
+            function restartQuiz() {
+                currentQuestion = 1;
+                score = 0;
+                userAnswers = [];
+                
+                elements.quizContainer.classList.remove('hidden');
+                elements.quizResults.classList.add('hidden');
+                
+                // Reset all options
+                document.querySelectorAll('.quiz-option').forEach(option => {
+                    option.classList.remove('selected', 'correct', 'incorrect');
+                    const circle = option.querySelector('.w-6');
+                    circle.style.backgroundColor = '';
+                });
+                
+                showQuestion(1);
+                updateProgress();
+            }
+
+            // Event listeners
+            elements.prevBtn.addEventListener('click', () => {
+                if (currentQuestion > 1) {
+                    currentQuestion--;
+                    showQuestion(currentQuestion);
+                    updateProgress();
+                }
+            });
+
+            elements.nextBtn.addEventListener('click', () => {
+                if (currentQuestion < totalQuestions) {
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                    updateProgress();
+                }
+            });
+
+            elements.submitBtn.addEventListener('click', showResults);
+            elements.restartBtn.addEventListener('click', restartQuiz);
+
+            // Initialize
+            handleAnswerSelection();
+            updateProgress();
+            showQuestion(1);
+        })();
+
+        // Drag and drop functionality for waste sorting
+        (function() {
+            const wasteItems = document.querySelectorAll('.waste-item');
+            const dropZones = document.querySelectorAll('.drop-zone');
+            
+            wasteItems.forEach(item => {
+                item.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', item.textContent);
+                    e.dataTransfer.setData('item', item.outerHTML);
+                });
+            });
+            
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.style.transform = 'scale(1.05)';
+                    zone.style.borderColor = '#10B981';
+                });
+                
+                zone.addEventListener('dragleave', () => {
+                    zone.style.transform = 'scale(1)';
+                    zone.style.borderColor = '';
+                });
+                
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    const itemText = e.dataTransfer.getData('text/plain');
+                    const itemHTML = e.dataTransfer.getData('item');
+                    
+                    // Simple validation logic
+                    let isCorrect = false;
+                    if (itemText.includes('Apple') && zone.querySelector('.text-eco-green')) {
+                        isCorrect = true;
+                    } else if (itemText.includes('Bottle') && zone.querySelector('.text-eco-blue')) {
+                        isCorrect = true;
+                    } else if (itemText.includes('Battery') && zone.querySelector('.text-eco-red')) {
+                        isCorrect = true;
+                    } else if (itemText.includes('Newspaper') && zone.querySelector('.text-eco-blue')) {
+                        isCorrect = true;
+                    }
+                    
+                    if (isCorrect) {
+                        zone.style.backgroundColor = 'rgba(16, 185, 129, 0.2)';
+                        zone.innerHTML = `<div class="text-eco-green font-semibold">✓ Correct!</div>`;
+                        setTimeout(() => {
+                            zone.style.backgroundColor = '';
+                            zone.innerHTML = zone.innerHTML.replace('✓ Correct!', zone.querySelector('span').textContent);
+                        }, 2000);
+                    } else {
+                        zone.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
+                        zone.innerHTML = `<div class="text-eco-red font-semibold">✗ Try Again</div>`;
+                        setTimeout(() => {
+                            zone.style.backgroundColor = '';
+                            zone.innerHTML = zone.innerHTML.replace('✗ Try Again', zone.querySelector('span').textContent);
+                        }, 2000);
+                    }
+                    
+                    zone.style.transform = 'scale(1)';
+                    zone.style.borderColor = '';
+                });
+            });
+        })();
+
+        // Parallax effect for sections
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.parallax');
+            
+            parallaxElements.forEach(element => {
+                const speed = element.dataset.speed || 0.5;
+                element.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Add loading animation
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+            document.body.style.transform = 'translateY(0)';
+        });
+    </script>
+</body>
+</html>
